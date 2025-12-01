@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试答题功能</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-result {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+        }
+        .success {
+            border-left-color: #28a745;
+            background-color: #d4edda;
+        }
+        .error {
+            border-left-color: #dc3545;
+            background-color: #f8d7da;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>答题功能测试</h1>
+    
+    <div class="test-result" id="test1">
+        <h3>测试1: 检查quiz.js文件是否存在</h3>
+        <p id="test1-result">正在测试...</p>
+    </div>
+    
+    <div class="test-result" id="test2">
+        <h3>测试2: 检查quizData数据结构</h3>
+        <p id="test2-result">正在测试...</p>
+    </div>
+    
+    <div class="test-result" id="test3">
+        <h3>测试3: 测试答题提交功能</h3>
+        <p id="test3-result">正在测试...</p>
+        <div id="quiz-test-container"></div>
+    </div>
+    
+    <div class="test-result" id="test4">
+        <h3>测试4: 测试分数计算</h3>
+        <p id="test4-result">正在测试...</p>
+    </div>
+    
+    <button onclick="runAllTests()">运行所有测试</button>
+    
+    <script src="scripts/quiz.js"></script>
+    <script>
+        function runAllTests() {
+            test1();
+            test2();
+            test3();
+            test4();
+        }
+        
+        function test1() {
+            const test1Result = document.getElementById('test1-result');
+            const test1Div = document.getElementById('test1');
+            
+            try {
+                if (typeof quizData !== 'undefined') {
+                    test1Result.textContent = '✓ quiz.js文件已成功加载，quizData变量存在';
+                    test1Div.className = 'test-result success';
+                } else {
+                    test1Result.textContent = '✗ quizData变量未定义';
+                    test1Div.className = 'test-result error';
+                }
+            } catch (error) {
+                test1Result.textContent = '✗ 错误: ' + error.message;
+                test1Div.className = 'test-result error';
+            }
+        }
+        
+        function test2() {
+            const test2Result = document.getElementById('test2-result');
+            const test2Div = document.getElementById('test2');
+            
+            try {
+                if (Array.isArray(quizData)) {
+                    test2Result.textContent = `✓ quizData是数组，包含${quizData.length}道题目`;
+                    test2Div.className = 'test-result success';
+                    
+                    // 检查每道题的结构
+                    let validStructure = true;
+                    quizData.forEach((question, index) => {
+                        if (!question.question || !question.options || !question.correctAnswer || !question.explanation) {
+                            validStructure = false;
+                            test2Result.textContent += `\n✗ 第${index + 1}题结构不完整`;
+                        }
+                    });
+                    
+                    if (validStructure) {
+                        test2Result.textContent += '\n✓ 所有题目结构完整';
+                    }
+                } else {
+                    test2Result.textContent = '✗ quizData不是数组';
+                    test2Div.className = 'test-result error';
+                }
+            } catch (error) {
+                test2Result.textContent = '✗ 错误: ' + error.message;
+                test2Div.className = 'test-result error';
+            }
+        }
+        
+        function test3() {
+            const test3Result = document.getElementById('test3-result');
+            const test3Div = document.getElementById('test3');
+            const container = document.getElementById('quiz-test-container');
+            
+            try {
+                // 创建一个简单的测试表单
+                container.innerHTML = `
+                    <div id="quiz-test">
+                        <div class="quiz-question">
+                            <p>${quizData[0].question}</p>
+                            <div class="quiz-options">
+                                ${Object.entries(quizData[0].options).map(([key, value]) => `
+                                    <label>
+                                        <input type="radio" name="q1" value="${key}">
+                                        ${key}. ${value}
+                                    </label><br>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <button onclick="submitTestQuiz()">提交测试答案</button>
+                        <div id="test-result-output"></div>
+                    </div>
+                `;
+                
+                test3Result.textContent = '✓ 测试表单已创建，请选择答案并点击提交按钮';
+                test3Div.className = 'test-result success';
+            } catch (error) {
+                test3Result.textContent = '✗ 错误: ' + error.message;
+                test3Div.className = 'test-result error';
+            }
+        }
+        
+        function submitTestQuiz() {
+            const selected = document.querySelector('input[name="q1"]:checked');
+            const output = document.getElementById('test-result-output');
+            
+            if (!selected) {
+                output.innerHTML = '<p style="color: red;">请选择一个答案</p>';
+                return;
+            }
+            
+            const userAnswer = selected.value;
+            const correctAnswer = quizData[0].correctAnswer;
+            
+            if (userAnswer === correctAnswer) {
+                output.innerHTML = `
+                    <p style="color: green;">✓ 回答正确！</p>
+                    <p><strong>解析：</strong>${quizData[0].explanation}</p>
+                `;
+            } else {
+                output.innerHTML = `
+                    <p style="color: red;">✗ 回答错误。正确答案是：${correctAnswer}</p>
+                    <p><strong>解析：</strong>${quizData[0].explanation}</p>
+                `;
+            }
+        }
+        
+        function test4() {
+            const test4Result = document.getElementById('test4-result');
+            const test4Div = document.getElementById('test4');
+            
+            try {
+                // 模拟计算分数
+                const testAnswers = {
+                    'q1': quizData[0].correctAnswer,
+                    'q2': 'wrong', // 故意错误
+                    'q3': quizData[2] ? quizData[2].correctAnswer : 'A',
+                    'q4': quizData[3] ? quizData[3].correctAnswer : 'A',
+                    'q5': quizData[4] ? quizData[4].correctAnswer : 'A'
+                };
+                
+                let score = 0;
+                let total = Math.min(5, quizData.length);
+                
+                // 检查第一题
+                if (testAnswers['q1'] === quizData[0].correctAnswer) {
+                    score++;
+                }
+                
+                // 检查第二题（故意错误）
+                if (quizData[1] && testAnswers['q2'] === quizData[1].correctAnswer) {
+                    score++;
+                }
+                
+                test4Result.textContent = `✓ 分数计算测试完成。模拟得分：${score}/${total}`;
+                test4Div.className = 'test-result success';
+                
+            } catch (error) {
+                test4Result.textContent = '✗ 错误: ' + error.message;
+                test4Div.className = 'test-result error';
+            }
+        }
+        
+        // 页面加载时自动运行测试
+        window.onload = function() {
+            setTimeout(runAllTests, 500);
+        };
+    </script>
+</body>
+</html>

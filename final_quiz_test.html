@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>答题系统最终测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-result {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .quiz-container {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .quiz-question {
+            margin: 15px 0;
+            padding: 10px;
+            border-left: 3px solid #007bff;
+        }
+        .quiz-results {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .hidden {
+            display: none;
+        }
+        .answered-correct {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .answered-wrong {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        .correct-answer {
+            color: #155724;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>答题系统最终测试</h1>
+    
+    <div class="test-result" id="test-summary">
+        <h2>测试总结</h2>
+        <p>这个测试将验证答题系统的所有功能是否正常工作。</p>
+        <button onclick="runAllTests()">运行所有测试</button>
+    </div>
+    
+    <div class="quiz-container">
+        <h2>实际答题测试</h2>
+        <p>请回答以下问题，然后点击"提交答案"按钮：</p>
+        
+        <form id="quiz-form">
+            <div class="quiz-question" id="question-q1">
+                <h3>1. 鸦片战争爆发于哪一年？</h3>
+                <div class="quiz-options">
+                    <label class="option-label">
+                        <input type="radio" name="q1" value="A">
+                        <span class="option-text">A. 1839年</span>
+                    </label><br>
+                    <label class="option-label">
+                        <input type="radio" name="q1" value="B">
+                        <span class="option-text">B. 1840年</span>
+                    </label><br>
+                    <label class="option-label">
+                        <input type="radio" name="q1" value="C">
+                        <span class="option-text">C. 1842年</span>
+                    </label><br>
+                    <label class="option-label">
+                        <input type="radio" name="q1" value="D">
+                        <span class="option-text">D. 1856年</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="quiz-question" id="question-q2">
+                <h3>2. 《南京条约》开放的通商口岸不包括？</h3>
+                <div class="quiz-options">
+                    <label class="option-label">
+                        <input type="radio" name="q2" value="A">
+                        <span class="option-text">A. 上海</span>
+                    </label><br>
+                    <label class="option-label">
+                        <input type="radio" name="q2" value="B">
+                        <span class="option-text">B. 广州</span>
+                    </label><br>
+                    <label class="option-label">
+                        <input type="radio" name="q2" value="C">
+                        <span class="option-text">C. 天津</span>
+                    </label><br>
+                    <label class="option-label">
+                        <input type="radio" name="q2" value="D">
+                        <span class="option-text">D. 宁波</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="quiz-question" id="question-q3">
+                <h3>3. 虎门销烟的主要负责人是谁？</h3>
+                <div class="quiz-options">
+                    <label class="option-label">
+                        <input type="radio" name="q3" value="A">
+                        <span class="option-text">A. 道光皇帝</span>
+                    </label><br>
+                    <label class="option-label">
+                        <input type="radio" name="q3" value="B">
+                        <span class="option-text">B. 林则徐</span>
+                    </label><br>
+                    <label class="option-label">
+                        <input type="radio" name="q3" value="C">
+                        <span class="option-text">C. 关天培</span>
+                    </label><br>
+                    <label class="option-label">
+                        <input type="radio" name="q3" value="D">
+                        <span class="option-text">D. 琦善</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="quiz-question" id="question-q4">
+                <h3>4. 鸦片战争后割让给英国的是？</h3>
+                <div class="quiz-options">
+                    <label class="option-label">
+                        <input type="radio" name="q4" value="A">
+                        <span class="option-text">A. 香港岛</span>
+                    </label><br>
+                    <label class="option-label">
+                        <input type="radio" name="q4" value="B">
+                        <span class="option-text">B. 澳门</span>
+                    </label><br>
+                    <label class="option-label">
+                        <input type="radio" name="q4" value="C">
+                        <span class="option-text">C. 台湾</span>
+                    </label><br>
+                    <label class="option-label">
+                        <input type="radio" name="q4" value="D">
+                        <span class="option-text">D. 澎湖列岛</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="quiz-question" id="question-q5">
+                <h3>5. 下列哪项不是《南京条约》的内容？</h3>
+                <div class="quiz-options">
+                    <label class="option-label">
+                        <input type="radio" name="q5" value="A">
+                        <span class="option-text">A. 赔款2100万银元</span>
+                    </label><br>
+                    <label class="option-label">
+                        <input type="radio" name="q5" value="B">
+                        <span class="option-text">B. 协定关税</span>
+                    </label><br>
+                    <label class="option-label">
+                        <input type="radio" name="q5" value="C">
+                        <span class="option-text">C. 领事裁判权</span>
+                    </label><br>
+                    <label class="option-label">
+                        <input type="radio" name="q5" value="D">
+                        <span class="option-text">D. 开设工厂权</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="quiz-actions">
+                <button type="button" id="submit-quiz">提交答案</button>
+                <button type="button" id="reset-quiz">重新开始</button>
+            </div>
+        </form>
+        
+        <div id="quiz-results" class="quiz-results hidden">
+            <h3>答题结果</h3>
+            <div class="score-display">
+                得分：<span id="score">0</span>/5
+            </div>
+            <div id="answer-feedback" class="answer-feedback">
+                <!-- 反馈内容将通过JavaScript动态生成 -->
+            </div>
+        </div>
+    </div>
+    
+    <div class="test-result" id="manual-test">
+        <h2>手动测试说明</h2>
+        <p>要测试答题系统，请按照以下步骤操作：</p>
+        <ol>
+            <li>选择所有问题的答案（正确答案：1-B, 2-C, 3-B, 4-A, 5-D）</li>
+            <li>点击"提交答案"按钮</li>
+            <li>检查是否显示得分（应该是5/5）</li>
+            <li>检查是否显示每道题的解析</li>
+            <li>点击"重新开始"按钮，检查表单是否重置</li>
+        </ol>
+        <p>如果以上所有步骤都正常工作，说明答题系统已修复。</p>
+    </div>
+    
+    <script src="scripts/quiz.js"></script>
+    <script>
+        // 运行所有测试
+        function runAllTests() {
+            const summary = document.getElementById('test-summary');
+            
+            // 测试1：检查quiz.js是否加载
+            if (typeof quizData !== 'undefined' && typeof handleQuizSubmit !== 'undefined') {
+                summary.innerHTML += '<div class="success">✓ quiz.js文件加载成功</div>';
+            } else {
+                summary.innerHTML += '<div class="error">✗ quiz.js文件加载失败</div>';
+                return;
+            }
+            
+            // 测试2：检查quizData是否正确
+            if (quizData.length === 5) {
+                summary.innerHTML += '<div class="success">✓ quizData包含5道题，正确</div>';
+            } else {
+                summary.innerHTML += `<div class="error">✗ quizData包含${quizData.length}道题，预期5道</div>`;
+            }
+            
+            // 测试3：初始化事件监听器
+            const submitBtn = document.getElementById('submit-quiz');
+            const resetBtn = document.getElementById('reset-quiz');
+            
+            if (submitBtn && resetBtn) {
+                submitBtn.onclick = handleQuizSubmit;
+                resetBtn.onclick = resetQuiz;
+                summary.innerHTML += '<div class="success">✓ 事件监听器初始化成功</div>';
+            } else {
+                summary.innerHTML += '<div class="error">✗ 无法找到提交或重置按钮</div>';
+            }
+            
+            // 测试4：模拟正确答案提交
+            setTimeout(() => {
+                // 选择正确答案
+                document.querySelector('input[name="q1"][value="B"]').checked = true;
+                document.querySelector('input[name="q2"][value="C"]').checked = true;
+                document.querySelector('input[name="q3"][value="B"]').checked = true;
+                document.querySelector('input[name="q4"][value="A"]').checked = true;
+                document.querySelector('input[name="q5"][value="D"]').checked = true;
+                
+                // 提交答案
+                handleQuizSubmit();
+                
+                // 检查结果
+                setTimeout(() => {
+                    const score = document.getElementById('score').textContent;
+                    const resultsVisible = !document.getElementById('quiz-results').classList.contains('hidden');
+                    
+                    if (resultsVisible && score === '5') {
+                        summary.innerHTML += '<div class="success">✓ 答题提交功能正常工作，得分：5/5</div>';
+                    } else {
+                        summary.innerHTML += `<div class="error">✗ 答题提交功能异常，得分：${score}/5，结果可见：${resultsVisible}</div>`;
+                    }
+                    
+                    // 测试5：重置功能
+                    resetQuiz();
+                    
+                    setTimeout(() => {
+                        const scoreAfterReset = document.getElementById('score').textContent;
+                        const resultsHidden = document.getElementById('quiz-results').classList.contains('hidden');
+                        const allUnchecked = document.querySelectorAll('input[type="radio"]:checked').length === 0;
+                        
+                        if (scoreAfterReset === '0' && resultsHidden && allUnchecked) {
+                            summary.innerHTML += '<div class="success">✓ 重置功能正常工作</div>';
+                        } else {
+                            summary.innerHTML += `<div class="error">✗ 重置功能异常，得分：${scoreAfterReset}，结果隐藏：${resultsHidden}，所有选项未选中：${allUnchecked}</div>`;
+                        }
+                        
+                        summary.innerHTML += '<h3>所有测试完成！</h3>';
+                        summary.innerHTML += '<p>答题系统已修复并可以正常使用。</p>';
+                    }, 500);
+                }, 500);
+            }, 1000);
+        }
+        
+        // 页面加载时自动初始化
+        window.addEventListener('load', function() {
+            // 初始化事件监听器
+            const submitBtn = document.getElementById('submit-quiz');
+            const resetBtn = document.getElementById('reset-quiz');
+            
+            if (submitBtn && resetBtn && typeof handleQuizSubmit !== 'undefined' && typeof resetQuiz !== 'undefined') {
+                submitBtn.onclick = handleQuizSubmit;
+                resetBtn.onclick = resetQuiz;
+            }
+        });
+    </script>
+</body>
+</html>

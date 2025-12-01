@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>答题系统简单测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .quiz-container {
+            margin: 20px 0;
+        }
+        .quiz-question {
+            margin: 15px 0;
+            padding: 10px;
+            border-left: 3px solid #007bff;
+        }
+        .quiz-results {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>答题系统简单测试</h1>
+    
+    <div class="test-section">
+        <h2>测试1：加载quiz.js文件</h2>
+        <div id="test1-result">等待测试...</div>
+        <button onclick="test1()">运行测试1</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>测试2：模拟答题并提交</h2>
+        <div id="test2-result">等待测试...</div>
+        
+        <div class="quiz-container">
+            <h3>模拟答题表单</h3>
+            <form id="quiz-form">
+                <div class="quiz-question">
+                    <h4>1. 鸦片战争爆发于哪一年？</h4>
+                    <div>
+                        <label><input type="radio" name="q1" value="A"> A. 1839年</label><br>
+                        <label><input type="radio" name="q1" value="B"> B. 1840年</label><br>
+                        <label><input type="radio" name="q1" value="C"> C. 1842年</label><br>
+                        <label><input type="radio" name="q1" value="D"> D. 1856年</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <h4>2. 《南京条约》开放的通商口岸不包括？</h4>
+                    <div>
+                        <label><input type="radio" name="q2" value="A"> A. 上海</label><br>
+                        <label><input type="radio" name="q2" value="B"> B. 广州</label><br>
+                        <label><input type="radio" name="q2" value="C"> C. 天津</label><br>
+                        <label><input type="radio" name="q2" value="D"> D. 宁波</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <h4>3. 虎门销烟的主要负责人是谁？</h4>
+                    <div>
+                        <label><input type="radio" name="q3" value="A"> A. 道光皇帝</label><br>
+                        <label><input type="radio" name="q3" value="B"> B. 林则徐</label><br>
+                        <label><input type="radio" name="q3" value="C"> C. 关天培</label><br>
+                        <label><input type="radio" name="q3" value="D"> D. 琦善</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <h4>4. 鸦片战争后割让给英国的是？</h4>
+                    <div>
+                        <label><input type="radio" name="q4" value="A"> A. 香港岛</label><br>
+                        <label><input type="radio" name="q4" value="B"> B. 澳门</label><br>
+                        <label><input type="radio" name="q4" value="C"> C. 台湾</label><br>
+                        <label><input type="radio" name="q4" value="D"> D. 澎湖列岛</label>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <h4>5. 下列哪项不是《南京条约》的内容？</h4>
+                    <div>
+                        <label><input type="radio" name="q5" value="A"> A. 赔款2100万银元</label><br>
+                        <label><input type="radio" name="q5" value="B"> B. 协定关税</label><br>
+                        <label><input type="radio" name="q5" value="C"> C. 领事裁判权</label><br>
+                        <label><input type="radio" name="q5" value="D"> D. 开设工厂权</label>
+                    </div>
+                </div>
+                
+                <button type="button" id="submit-quiz">提交答案</button>
+                <button type="button" id="reset-quiz">重新开始</button>
+            </form>
+            
+            <div id="quiz-results" class="quiz-results hidden">
+                <h3>答题结果</h3>
+                <div class="score-display">
+                    得分：<span id="score">0</span>/5
+                </div>
+                <div id="answer-feedback" class="answer-feedback">
+                    <!-- 反馈内容将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </div>
+        
+        <button onclick="test2()">运行测试2</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>测试3：在实际网页中测试</h2>
+        <div id="test3-result">等待测试...</div>
+        <button onclick="test3()">运行测试3</button>
+    </div>
+    
+    <script src="scripts/quiz.js"></script>
+    <script>
+        // 测试1：检查quiz.js文件是否加载成功
+        function test1() {
+            const resultDiv = document.getElementById('test1-result');
+            
+            if (typeof quizData !== 'undefined') {
+                resultDiv.innerHTML = `<span class="success">✓ 测试通过</span><br>`;
+                resultDiv.innerHTML += `quiz.js文件加载成功，找到${quizData.length}道题`;
+                
+                // 显示题目详情
+                const details = document.createElement('pre');
+                details.textContent = JSON.stringify(quizData, null, 2);
+                resultDiv.appendChild(details);
+            } else {
+                resultDiv.innerHTML = `<span class="error">✗ 测试失败</span><br>`;
+                resultDiv.innerHTML += `quiz.js文件未加载或quizData未定义`;
+            }
+        }
+        
+        // 测试2：模拟答题并提交
+        function test2() {
+            const resultDiv = document.getElementById('test2-result');
+            
+            // 选择正确答案
+            document.querySelector('input[name="q1"][value="B"]').checked = true;
+            document.querySelector('input[name="q2"][value="C"]').checked = true;
+            document.querySelector('input[name="q3"][value="B"]').checked = true;
+            document.querySelector('input[name="q4"][value="A"]').checked = true;
+            document.querySelector('input[name="q5"][value="D"]').checked = true;
+            
+            // 检查handleQuizSubmit函数是否存在
+            if (typeof handleQuizSubmit !== 'undefined') {
+                // 初始化提交按钮事件
+                const submitBtn = document.getElementById('submit-quiz');
+                const resetBtn = document.getElementById('reset-quiz');
+                
+                submitBtn.onclick = handleQuizSubmit;
+                resetBtn.onclick = resetQuiz;
+                
+                // 调用handleQuizSubmit
+                handleQuizSubmit();
+                
+                // 等待结果更新
+                setTimeout(() => {
+                    const score = document.getElementById('score').textContent;
+                    const resultsVisible = !document.getElementById('quiz-results').classList.contains('hidden');
+                    
+                    if (resultsVisible && score === '5') {
+                        resultDiv.innerHTML = `<span class="success">✓ 测试通过</span><br>`;
+                        resultDiv.innerHTML += `答题系统正常工作，得分：${score}/5`;
+                    } else {
+                        resultDiv.innerHTML = `<span class="error">✗ 测试失败</span><br>`;
+                        resultDiv.innerHTML += `结果可见：${resultsVisible}，得分：${score}/5（预期5/5）`;
+                    }
+                }, 500);
+            } else {
+                resultDiv.innerHTML = `<span class="error">✗ 测试失败</span><br>`;
+                resultDiv.innerHTML += `handleQuizSubmit函数未定义`;
+            }
+        }
+        
+        // 测试3：在实际网页中测试
+        function test3() {
+            const resultDiv = document.getElementById('test3-result');
+            resultDiv.innerHTML = `<span class="success">✓ 测试准备就绪</span><br>`;
+            resultDiv.innerHTML += `请点击下方按钮在实际网页中测试答题系统`;
+            
+            // 创建测试链接
+            const testLink = document.createElement('a');
+            testLink.href = 'index.html#quiz';
+            testLink.target = '_blank';
+            testLink.innerHTML = '<button>在实际网页中测试答题系统</button>';
+            resultDiv.appendChild(testLink);
+        }
+        
+        // 页面加载时自动运行测试1
+        window.addEventListener('load', function() {
+            setTimeout(test1, 1000);
+        });
+    </script>
+</body>
+</html>
